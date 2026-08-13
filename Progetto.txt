@@ -1,0 +1,805 @@
+📝 Cosa scrivere nella relazione
+💻 Codice Python da sviluppare
+🎯 A cosa serve il codice
+📊 Quale risultato devi ottenere e conservare
+🔗 Dove quel risultato verrà utilizzato nella relazione
+ROADMAP OPERATIVA — PROGETTO CNN SU CIFAR-10
+1. INTRODUZIONE
+📝 Cosa dovrai scrivere
+
+In questa fase non serve ancora scrivere molto.
+
+Dovrai spiegare:
+
+obiettivo del progetto;
+problema di classificazione;
+perché utilizzare il Deep Learning;
+perché una CNN è adatta alla classificazione delle immagini;
+descrizione sintetica del workflow.
+💻 Codice Python
+
+NESSUN CODICE NECESSARIO.
+
+Questa parte verrà scritta alla fine, quando avrai i risultati effettivi del modello.
+
+🎯 Risultato
+
+Nessun risultato numerico.
+
+🔗 Alla fine userai
+
+I risultati ottenuti nelle sezioni 2–14 per spiegare concretamente cosa è stato fatto.
+
+2. DESCRIZIONE DEL DATASET CIFAR-10
+
+Questa è la prima sezione in cui devi sviluppare codice.
+
+💻 CODICE 2.1 — Importazione/caricamento CIFAR-10
+
+Devi sviluppare il codice che:
+
+scarica CIFAR-10;
+carica training e test set;
+memorizza immagini ed etichette;
+controlla le dimensioni.
+🎯 Serve a
+
+Capire con quale dataset stai lavorando.
+
+📊 Devi ottenere
+
+Informazioni del tipo:
+
+Training images: 50000
+Test images: 10000
+
+Image shape: (32, 32, 3)
+
+Number of classes: 10
+💻 CODICE 2.2 — Visualizzazione delle classi
+
+Devi creare una visualizzazione con esempi delle 10 categorie.
+
+🎯 Serve a
+
+Mostrare graficamente cosa contiene CIFAR-10.
+
+📊 Output da conservare
+
+Una figura simile:
+
+airplane   automobile   bird
+cat        deer        dog
+frog       horse       ship
+truck
+
+con alcune immagini per ogni classe.
+
+🔗 Utilizzo
+
+Questa figura finirà nella Sezione 2 della relazione.
+
+💻 CODICE 2.3 — Distribuzione delle classi
+
+Calcolare quante immagini appartengono a ogni categoria.
+
+🎯 Serve a
+
+Verificare se il dataset è bilanciato.
+
+📊 Output
+
+Un grafico:
+
+Classe       Numero immagini
+airplane     5000
+automobile   5000
+...
+truck        5000
+🔗 Utilizzo
+
+Commento nella Sezione 2.
+
+3. IMPORTAZIONE DELLE LIBRERIE
+
+Questa sezione deve essere molto semplice.
+
+💻 CODICE 3.1 — Import
+
+Dovrai importare le librerie necessarie.
+
+Indicativamente:
+
+TensorFlow / Keras
+NumPy
+Pandas
+Matplotlib
+Seaborn
+Scikit-learn
+🎯 Serve a
+
+Preparare l'ambiente di sviluppo.
+
+📊 Output
+
+Nessun risultato particolare.
+
+Devi semplicemente verificare che:
+
+tutte le librerie siano installate
+
+e che il codice venga eseguito senza errori.
+
+🔗 Utilizzo
+
+Sezione 3.
+
+4. CARICAMENTO E PREPARAZIONE DEI DATI
+
+Questa è una sezione fondamentale.
+
+💻 CODICE 4.1 — Train/Test split
+
+CIFAR-10 viene fornito già con:
+
+50.000 training
+10.000 test
+
+Ma devi creare anche il validation set.
+
+Una possibile struttura:
+
+Training
+Validation
+Test
+
+Ad esempio:
+
+40.000 Training
+10.000 Validation
+10.000 Test
+🎯 Serve a
+
+Avere tre insiemi con funzioni diverse:
+
+Training
+
+→ serve ad allenare la CNN.
+
+Validation
+
+→ serve a controllare durante il training come generalizza.
+
+Test
+
+→ serve esclusivamente alla valutazione finale.
+
+📊 Output
+
+Devi stampare:
+
+Training: ...
+Validation: ...
+Test: ...
+💻 CODICE 4.2 — Normalizzazione
+
+Convertire:
+
+0–255
+
+in:
+
+0–1
+🎯 Serve a
+
+Rendere l'addestramento della rete più stabile ed efficiente.
+
+📊 Output
+
+Controllare:
+
+Min pixel: 0.0
+Max pixel: 1.0
+🔗 Utilizzo
+
+Sezione 4.
+
+💻 CODICE 4.3 — Codifica delle etichette
+
+Devi verificare come sono rappresentate le label.
+
+Ad esempio:
+
+0 = airplane
+1 = automobile
+2 = bird
+...
+🎯 Serve a
+
+Permettere alla rete di lavorare correttamente con le classi.
+
+📊 Output
+
+Una tabella:
+
+0 → airplane
+1 → automobile
+2 → bird
+...
+5. DATA AUGMENTATION
+
+Questa è un'altra parte in cui devi produrre output visivi.
+
+💻 CODICE 5.1 — Creazione Data Augmentation
+
+Puoi applicare trasformazioni come:
+
+RandomFlip
+RandomRotation
+RandomZoom
+RandomTranslation
+
+Non è necessario utilizzare tutte le tecniche.
+
+🎯 Serve a
+
+Creare variazioni delle immagini di training per aumentare la capacità di generalizzazione della CNN.
+
+💻 CODICE 5.2 — Visualizzazione augmentation
+
+Prendere una singola immagine e applicare più trasformazioni.
+
+Ad esempio:
+
+ORIGINALE
+
+↓
+ROTATA
+
+↓
+ZOOM
+
+↓
+FLIPPATA
+
+↓
+TRASLATA
+📊 Output da conservare
+
+Una figura con:
+
+Immagine originale
++
+Immagini aumentate
+🔗 Utilizzo
+
+Questa figura andrà nella Sezione 5.
+
+6. DEFINIZIONE DELL'ARCHITETTURA CNN
+
+Questa è la parte centrale del progetto.
+
+💻 CODICE 6.1 — Costruzione della CNN
+
+Devi costruire il modello.
+
+Concettualmente:
+
+Input
+ ↓
+Conv2D
+ ↓
+Pooling
+ ↓
+Conv2D
+ ↓
+Pooling
+ ↓
+Conv2D
+ ↓
+Pooling
+ ↓
+Flatten
+ ↓
+Dense
+ ↓
+Dropout
+ ↓
+Output
+🎯 Serve a
+
+Creare il modello che imparerà a distinguere le classi.
+
+💻 CODICE 6.2 — model.summary()
+
+Devi stampare la struttura della rete.
+
+📊 Output da conservare
+
+Qualcosa del tipo:
+
+Layer                 Output Shape
+-----------------------------------
+Conv2D                ...
+MaxPooling            ...
+Conv2D                ...
+MaxPooling            ...
+Flatten               ...
+Dense                 ...
+Dropout               ...
+Dense                 ...
+
+e soprattutto:
+
+Total params: ...
+Trainable params: ...
+🔗 Utilizzo
+
+La model.summary() sarà molto utile nella Sezione 6.
+
+💻 CODICE 6.3 — Visualizzazione dell'architettura
+
+Se possibile, genera anche un diagramma della CNN.
+
+🎯 Serve a
+
+Mostrare graficamente il funzionamento della rete.
+
+📊 Output
+
+Un diagramma:
+
+Input
+ ↓
+Conv
+ ↓
+Pooling
+ ↓
+Conv
+ ↓
+Pooling
+ ↓
+Flatten
+ ↓
+Dense
+ ↓
+Output
+🔗 Utilizzo
+
+Sezione 6.
+
+7. COMPILAZIONE DEL MODELLO
+💻 CODICE 7.1 — model.compile()
+
+Devi impostare:
+
+Loss
+
+Per classificazione multiclass CIFAR-10:
+
+SparseCategoricalCrossentropy
+
+oppure, se trasformi il problema in due classi:
+
+BinaryCrossentropy
+
+Qui dobbiamo decidere definitivamente se il progetto rimane sulle 10 classi CIFAR-10 oppure se vuoi mantenere la classificazione "animale vs veicolo" della traccia iniziale.
+
+È una scelta importante perché modifica architettura, output e metriche.
+
+Optimizer
+
+Ad esempio:
+
+Adam
+Metrics
+
+Almeno:
+
+accuracy
+
+e successivamente:
+
+precision
+recall
+F1
+🎯 Serve a
+
+Definire come la rete impara e come misuriamo le sue prestazioni.
+
+📊 Output
+
+Configurazione del modello.
+
+🔗 Utilizzo
+
+Sezione 7.
+
+8. ADDESTRAMENTO DEL MODELLO
+
+Questa sarà probabilmente la parte di codice che richiederà più tempo di esecuzione.
+
+💻 CODICE 8.1 — Training
+
+Devi impostare:
+
+epochs
+batch_size
+validation_data
+
+e avviare:
+
+model.fit()
+🎯 Serve a
+
+Far apprendere alla CNN le caratteristiche delle immagini.
+
+💻 CODICE 8.2 — Callback
+
+Ti consiglio almeno:
+
+EarlyStopping
+
+Interrompe il training quando il modello smette di migliorare.
+
+ModelCheckpoint
+
+Salva il modello migliore.
+
+🎯 Serve a
+
+Evitare:
+
+training inutile;
+overfitting eccessivo;
+perdita del modello migliore.
+💻 CODICE 8.3 — Salvataggio del modello
+
+Salvare il modello finale/migliore.
+
+Ad esempio:
+
+cnn_cifar10_best.keras
+🎯 Output
+
+Un file contenente la CNN addestrata.
+
+Questo file va conservato.
+
+9. ANALISI DEI RISULTATI DEL TRAINING
+
+Questa parte dipende direttamente dall'output di model.fit().
+
+💻 CODICE 9.1 — Accuracy
+
+Devi estrarre:
+
+training accuracy
+validation accuracy
+
+e costruire il grafico.
+
+📊 Output
+
+Grafico:
+
+Accuracy
+  |
+1 |            ______ Training
+  |          /
+  |       __/--------- Validation
+  |
+  +-------------------------- Epoch
+💻 CODICE 9.2 — Loss
+
+Grafico:
+
+Training Loss
+Validation Loss
+🎯 Serve a
+
+Capire se il modello:
+
+sta imparando;
+sta generalizzando;
+sta andando in overfitting;
+sta andando in underfitting.
+🔗 Output
+
+Questi due grafici saranno fondamentali nella Sezione 9.
+
+10. VALUTAZIONE SUL TEST SET
+
+Ora arriva la valutazione finale.
+
+💻 CODICE 10.1 — model.evaluate()
+
+Utilizzare il:
+
+TEST SET
+📊 Devi ottenere almeno:
+Test Loss
+Test Accuracy
+
+Questo è uno dei risultati più importanti dell'intero progetto.
+
+💻 CODICE 10.2 — Predizioni
+
+Utilizzare:
+
+model.predict()
+🎯 Serve a
+
+Ottenere la classe prevista per ogni immagine.
+
+Esempio:
+
+Immagine 1 → cat
+Immagine 2 → automobile
+Immagine 3 → truck
+...
+📊 Output
+
+Un array di predizioni.
+
+Questo sarà necessario per:
+
+confusion matrix;
+precision;
+recall;
+F1;
+analisi errori.
+11. ANALISI DETTAGLIATA DELLE PRESTAZIONI
+
+Questa è una delle sezioni più importanti della relazione.
+
+💻 CODICE 11.1 — Confusion Matrix
+
+Utilizzare:
+
+y_true
+y_pred
+
+per creare la confusion matrix.
+
+📊 Output
+
+Una matrice:
+
+              Predicted
+             cat dog truck...
+Actual cat
+Actual dog
+Actual truck
+...
+🎯 Serve a
+
+Capire quali classi vengono confuse tra loro.
+
+💻 CODICE 11.2 — Classification Report
+
+Calcolare:
+
+Precision
+Recall
+F1-score
+Support
+
+per ogni classe.
+
+📊 Output
+
+Una tabella del tipo:
+
+              precision recall f1-score
+airplane
+automobile
+bird
+cat
+...
+truck
+🔗 Utilizzo
+
+Questa tabella sarà utilizzata direttamente nella Sezione 11.
+
+💻 CODICE 11.3 — Identificazione degli errori
+
+Confrontare:
+
+y_true != y_pred
+🎯 Serve a
+
+Individuare tutte le immagini sbagliate.
+
+💻 CODICE 11.4 — Visualizzazione immagini errate
+
+Visualizzare, per esempio, 20–25 immagini sbagliate.
+
+Per ciascuna:
+
+Classe reale: cat
+Classe predetta: dog
+📊 Output da conservare
+
+Una figura con le immagini errate e relative:
+
+True label
+Predicted label
+🔗 Utilizzo
+
+Questa sarà fondamentale per il commento qualitativo degli errori.
+
+12. LIMITI DEL MODELLO
+
+Qui non devi sviluppare molto codice.
+
+Devi utilizzare i risultati precedenti.
+
+📝 Dovrai discutere
+
+Dataset
+
+immagini molto piccole;
+numero limitato di classi;
+immagini non necessariamente rappresentative del mondo reale.
+
+Generalizzazione
+
+il modello potrebbe funzionare bene su CIFAR-10 ma peggio su immagini reali.
+
+CNN
+
+architettura relativamente semplice;
+possibile overfitting;
+capacità computazionale limitata.
+
+Applicazione reale
+
+Nel caso dell'auto a guida autonoma, immagini reali saranno:
+
+più grandi;
+più complesse;
+con illuminazione variabile;
+con oggetti parzialmente nascosti;
+con più oggetti contemporaneamente.
+💻 Codice
+
+Nessun nuovo codice fondamentale.
+
+13. POSSIBILI MIGLIORAMENTI FUTURI
+
+Qui puoi utilizzare gli esperimenti precedenti.
+
+Se hai tempo, puoi fare un secondo esperimento.
+
+💻 CODICE 13.1 — CNN migliorata
+
+Modificare:
+
+numero di filtri;
+numero di layer;
+Dropout;
+learning rate;
+data augmentation.
+🎯 Obiettivo
+
+Vedere se il modello migliora.
+
+💻 CODICE 13.2 — Confronto modelli
+
+Creare una tabella:
+
+Modello	Accuracy	Precision	Recall	F1
+CNN base	X	X	X	X
+CNN migliorata	X	X	X	X
+📊 Output
+
+Un confronto quantitativo.
+
+🔗 Utilizzo
+
+Sezione 13.
+
+14. CONCLUSIONI
+
+Anche qui non serve codice.
+
+La conclusione deve essere scritta utilizzando tutto ciò che hai prodotto.
+
+Dovrai rispondere:
+
+Il modello CNN ha raggiunto l'obiettivo?
+
+E soprattutto:
+
+Quali sono state le prestazioni?
+
+Quali sono stati gli errori principali?
+
+Quali sono i limiti?
+
+Come potrebbe essere migliorato?
+
+15. RIFERIMENTI
+
+Nessun codice.
+
+Dovrai raccogliere:
+
+documentazione TensorFlow/Keras;
+documentazione CIFAR-10;
+eventuali articoli scientifici;
+fonti sulla CNN;
+fonti sulla classificazione delle immagini.
+🎯 LA COSA PIÙ IMPORTANTE: COSA DEVI SVILUPPARE DAVVERO
+
+Se il tuo obiettivo è scrivere prima tutto il codice e poi la relazione, non devi sviluppare 15 notebook separati.
+
+Ti consiglio di costruire un unico notebook principale, strutturato così:
+
+01. IMPORT LIBRARIES
+        ↓
+02. LOAD CIFAR-10
+        ↓
+03. DATASET ANALYSIS
+        ↓
+04. TRAIN / VALIDATION / TEST
+        ↓
+05. NORMALIZATION
+        ↓
+06. DATA AUGMENTATION
+        ↓
+07. CNN ARCHITECTURE
+        ↓
+08. MODEL COMPILATION
+        ↓
+09. MODEL TRAINING
+        ↓
+10. TRAINING GRAPHS
+        ↓
+11. TEST EVALUATION
+        ↓
+12. PREDICTIONS
+        ↓
+13. CONFUSION MATRIX
+        ↓
+14. CLASSIFICATION REPORT
+        ↓
+15. ERROR ANALYSIS
+        ↓
+16. SAVE MODEL
+📦 Alla fine del codice devi avere questi OUTPUT
+
+Ti consiglio di considerare questa la tua checklist finale del codice.
+
+ Dataset CIFAR-10 caricato
+ Numero immagini verificato
+ Numero classi verificato
+ Dimensione immagini verificata
+ Grafico distribuzione classi
+ Figura con immagini originali
+ Train/Validation/Test creati
+ Immagini normalizzate
+ Data Augmentation implementata
+ Figura con immagini aumentate
+ CNN costruita
+ model.summary() salvato
+ Modello compilato
+ Training completato
+ Modello migliore salvato
+ Grafico Training/Validation Accuracy
+ Grafico Training/Validation Loss
+ Test Accuracy
+ Test Loss
+ Predizioni generate
+ Precision
+ Recall
+ F1-score
+ Classification Report
+ Confusion Matrix
+ Immagini classificate erroneamente
+ Analisi degli errori
+ Eventuale secondo modello
+ Confronto tra modelli
+
+Quando questa checklist è tutta completata, praticamente avrai già prodotto tutto il materiale necessario per scrivere la relazione.
