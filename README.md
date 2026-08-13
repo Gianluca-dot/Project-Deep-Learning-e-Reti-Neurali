@@ -137,3 +137,34 @@ Un esempio di confronto utile potrebbe essere:
 CNN custom: più semplice, più interpretabile, ma prestazioni inferiori
 ResNet: più complessa, più potente, spesso più accurata, ma meno trasparente e più costosa computazionalmente
 Quindi, in sintesi: sì, il transfer learning conviene, ma ancora meglio è usarlo come confronto con una rete creata da zero, se si ha tempo e si vuole un progetto più convincente.
+
+inserire solo le due classi: animali e veicoli, escludendo dal dataset aerei e navi, sia la soluzione più logica e preferibile anche a quella di inserire una soglia di confidenza, perchè il problrema chiede di classificare le immagini il più correttamente possibile tra veicoli ed animali e quindi non includere la classe aerei e navi si può considerare come una operazione di pulizia del dataset, operazione che si compie sempre prima di far eseguire le operazioni di addestramento e validazione.
+
+La scelta di tenere solo le due macro-classi:
+
+animali
+veicoli stradali
+ed escludere:
+
+aerei
+navi
+è la più logica  e più coerente rispetto all’uso di una soglia di confidenza, perché:
+
+il problema richiesto è binario
+l’obiettivo è classificare il più correttamente possibile tra due sole categorie
+le classi non pertinenti introdurrebbero rumore concettuale nel dataset
+la pulizia del dataset è una fase normale e necessaria prima del training e della validation
+Dal punto di vista metodologico, stai facendo una selezione del dataset in base al problema da risolvere. Questo non è un “trucco”, ma una buona pratica di preprocessing e di data curation.
+
+La soglia di confidenza, invece, sarebbe utile se si volesse costruire un sistema che debba anche gestire immagini fuori distribuzione o categorie sconosciute. Ma in questo caso non è il focus del problema, quindi è meno adatta.
+
+Quindi la formulazione più corretta da usare nel progetto è qualcosa del tipo: “Per rendere il problema coerente con l’obiettivo di classificare immagini tra veicoli e animali, sono state mantenute soltanto le classi pertinenti del dataset CIFAR-10, escludendo aerei e navi in quanto non appartenenti alla categoria dei veicoli stradali.”
+
+Questo permette di:
+
+avere un dataset più pulito
+rendere il compito più chiaro
+evitare ambiguità nella valutazione
+lavorare su un problema ben definito
+Un piccolo accorgimento: quando si scriverà il notebook, si specificherà sempre che non si stà usando CIFAR-10 completo, ma un sottoinsieme selezionato del dataset.
+Questo rende la metodologia trasparente e professionale.
