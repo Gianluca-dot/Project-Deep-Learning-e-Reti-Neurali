@@ -1,5 +1,5 @@
 1. Introduzione:
-- Obiettivo del progetto
+- Scopi del progetto
 - Problema affrontato
 - Motivazione della scelta della CNN
 - Eventuale confronto tra CNN custom e transfer learning
@@ -101,42 +101,39 @@ poi addestro il modello con EarlyStopping attivo
 
 
 * CONFRONTO TRA CNN CUSTOM E TRASNSFER LEARNING CON UN MODELLO PRE ADDESTRATO ResNet
-Sì, in questo progetto il transfer learning può essere una scelta molto buona, ma dipende da cosa vuoi dimostrare.
 
-In generale, per un progetto su CIFAR-10 hai due approcci sensati:
+In generale, per un progetto su CIFAR-10 ci sono due approcci sensati:
 
 CNN costruita da zero
 Transfer learning con un modello pre-addestrato, come ResNet
-La soluzione migliore, dal punto di vista didattico, spesso è confrontare i due approcci. Questo ti permette di mostrare:
+La soluzione migliore, dal punto di vista didattico, spesso è confrontare i due approcci. Questo permette di mostrare:
 
 come funziona una CNN progettata da zero
 come cambia il comportamento usando un modello pre-addestrato
 quali vantaggi e svantaggi ha il transfer learning rispetto a una rete costruita manualmente
-Per il tuo caso, il transfer learning ha senso perché:
+In questo caso, il transfer learning ha senso perché:
 
 ResNet ha già imparato filtri generici molto utili
 spesso converge più velocemente
 può dare prestazioni migliori, soprattutto se il training set non è enorme
-ti permette di discutere in modo interessante il tema della riusabilità dei modelli
-Però ci sono anche alcune attenzioni:
+permette di discutere in modo interessante il tema della riusabilità dei modelli
+Però ci sono anche alcune problematiche:
 CIFAR-10 ha immagini piccole, quindi spesso bisogna adattare l’input al formato richiesto da ResNet
-se usi un modello pre-addestrato, devi spiegare bene cosa hai congelato e cosa hai riaddestrato
+se si usa un modello pre-addestrato, devi spiegare bene cosa hai congelato e cosa hai riaddestrato
 il docente potrebbe aspettarsi che tu motivi chiaramente perché hai scelto il transfer learning
-Il mio consiglio è questo:
+Quindi:
 
-se il progetto deve essere semplice e lineare, fai solo una CNN
-se vuoi fare un progetto più completo e forte, fai un confronto tra CNN da zero e transfer learning con ResNet
+se il progetto deve essere semplice e lineare, si esegue solo una CNN
+se si vuole fare un progetto più completo e forte, fai un confronto tra CNN da zero e transfer learning con ResNet
 In questo secondo caso, il notebook potrebbe avere una struttura del tipo:
 
 modello 1: CNN custom
 modello 2: ResNet con transfer learning
 confronto finale su accuracy, loss, confusion matrix e tempi di addestramento
-Così la tua analisi finale diventa molto più ricca, perché puoi dire non solo “il modello funziona”, ma anche “questo approccio è migliore di quest’altro e per quali motivi”.
+Così l'analisi finale diventa molto più ricca, perché si può dire non solo “il modello funziona”, ma anche “questo approccio è migliore di quest’altro e per quali motivi”.
 
 Un esempio di confronto utile potrebbe essere:
 
 CNN custom: più semplice, più interpretabile, ma prestazioni inferiori
 ResNet: più complessa, più potente, spesso più accurata, ma meno trasparente e più costosa computazionalmente
-Quindi, in sintesi: sì, il transfer learning conviene, ma ancora meglio è usarlo come confronto con una rete creata da zero, se hai tempo e vuoi un progetto più convincente.
-
-Se vuoi, nel prossimo messaggio possiamo decidere insieme quale delle due strade è più adatta al tuo progetto specifico e al livello di complessità che vuoi raggiungere.
+Quindi, in sintesi: sì, il transfer learning conviene, ma ancora meglio è usarlo come confronto con una rete creata da zero, se si ha tempo e si vuole un progetto più convincente.
