@@ -1,0 +1,164 @@
+Creazione VGG-like semplificata pensata per dataset CIFAR-10:
+
+input: immagini CIFAR-10 da 32x32x3
+problema: binario
+classi:
+0 = animali
+1 = veicoli stradali
+Questa è una struttura sensata, abbastanza semplice da implementare e non troppo pesante.
+
+Architettura layer per layer
+
+Input
+shape: 32 x 32 x 3
+Blocco convoluzionale 1
+Conv2D, 32 filtri, kernel 3x3, padding="same"
+BatchNormalization
+ReLU
+Conv2D, 32 filtri, kernel 3x3, padding="same"
+BatchNormalization
+ReLU
+MaxPooling2D 2x2
+Dropout leggero, ad esempio 0.25
+Blocco convoluzionale 2
+Conv2D, 64 filtri, kernel 3x3, padding="same"
+BatchNormalization
+ReLU
+Conv2D, 64 filtri, kernel 3x3, padding="same"
+BatchNormalization
+ReLU
+MaxPooling2D 2x2
+Dropout 0.25
+Blocco convoluzionale 3
+Conv2D, 128 filtri, kernel 3x3, padding="same"
+BatchNormalization
+ReLU
+Conv2D, 128 filtri, kernel 3x3, padding="same"
+BatchNormalization
+ReLU
+MaxPooling2D 2x2
+Dropout 0.25
+Parte finale
+Flatten
+Dense, 128 neuroni
+BatchNormalization
+ReLU
+Dropout 0.5 oppure 0.3 se si vuole essere meno aggressivi
+Dense finale con 1 neurone
+attivazione sigmoid
+
+Perché questa struttura va bene
+
+è ispirata a VGG, quindi usa tanti 3x3 piccoli e blocchi ripetuti
+è più leggera della VGG originale
+è adatta a immagini piccole come CIFAR-10
+produce un output binario coerente con il nostro obiettivo
+Perché non si esagera con la profondità su CIFAR-10 e non serve una rete enorme per iniziare.
+
+Se la rete è troppo profonda o troppo larga, si corre il rischio di un cattivo apprendimento e soprattutto:
+
+overfitting
+training più lento
+più difficoltà nel debugging
+
+Questa versione invece è un buon compromesso tra:
+
+semplicità
+capacità di apprendimento
+controllo del modello
+
+Esempio di interpretazione pratica Se si passa un’immagine di un cane:
+la rete deve arrivare a output vicino a 0
+Se passi un’immagine di un’auto:
+la rete deve arrivare a output vicino a 1
+
+Quindi il neurone finale con sigmoid restituisce una probabilità del tipo:
+0.12 per animale
+0.91 per veicolo e poi tu applichi una soglia, ad esempio 0.5.
+
+Nota importante Questa è una buona base, ma non è ancora “ottimizzata” al massimo.
+Dopo averla provata, si porteranno dei miglioramenti:
+
+numero di filtri
+dropout
+learning rate
+data augmentation
+numero di blocchi
+
+--------------------------------------------------------------------------------------------------
+NOTA IMPORTANTISSIMA PER LA COSTRUZIONE DELLA VGG CUSTOM:
+BISOGNA FARE DEGLI AGGIUSTAMENTI PRIMA DEL TRAINING.
+--------------------------------------------------------------------------------------------------
+Bisogna “raggruppare le classi” vuol dire prendere le 10 etichette originali di CIFAR-10 e ricondurle a 2 sole categorie, nel nostro caso:
+
+0 = animali
+1 = veicoli stradali
+
+Quindi non si sta piùfacendo una classificazione a 10 classi, ma una classificazione binaria.
+
+Cosa significa in pratica: Nel dataset CIFAR-10 originale si hanno queste classi:
+
+airplane
+automobile
+bird
+cat
+deer
+dog
+frog
+horse
+ship
+truck
+Vogliamo trasformarle così:
+
+animali: bird, cat, deer, dog, frog, horse
+veicoli stradali: automobile, truck
+
+ed escludere airplane e ship, perché non rientrano né negli animali né nei veicoli stradali che ci interessano
+Quindi il “raggruppamento” non è solo un cambio di nome, ma una vera operazione di preprocessing sul dataset:
+
+si prendono le immagini
+si tengono solo quelle delle classi che ci servono
+si rimappano le etichette in 0 e 1
+Tutto questo si deve fare prima del training, perché il modello deve ricevere già il dataset preparato nel formato corretto.
+
+In altre parole:
+
+si caricha CIFAR-10
+si selezionano le classi utili
+si trasformano le label originali in nuove label binarie
+si divide il dataset in train/validation/test
+solo dopo si fa il training
+Perché prima del training?
+Perché la rete deve sapere fin dall’inizio qual è il problema che deve risolvere.
+Se si lasciano le etichette originali a 10 classi, il modello imparerà a distinguere 10 categorie.
+Se invece gli si danno etichette trasformate in 0/1, allora imparerà un problema binario.
+
+Esempio pratico Supponiamo che un’immagine originale abbia label:
+
+dog
+Nello schema:
+
+dog appartiene agli animali
+quindi la nuova label diventa 0
+Se invece l’immagine è:
+
+truck
+allora:
+
+truck appartiene ai veicoli stradali
+quindi la nuova label diventa 1
+Se l’immagine è:
+
+airplane
+si elimina dal dataset
+oppure la si considera una terza categoria, ma allora non sarebbe più un problema binario.
+Nel nostro caso dato che si vogliono solo animali vs veicoli stradali, la scelta più pulita è scartare le classi non pertinenti.
+
+Quindi la sequenza corretta è questa:
+
+selezione delle classi
+mapping delle etichette
+split del dataset
+training della CNN
+Un’ultima cosa importante se si fa il raggruppamento, bisogna farlo in modo coerente su train, validation e test.
+Non ci si può allenare su etichette originali e poi testare su etichette raggruppate: il problema cambierebbe a metà strada.
