@@ -1,0 +1,59 @@
+Ecco come filtrare il dataset CIFAR-10
+per rimuovere le classi non pertinenti all'ambiente urbano (aerei e navi) e convertire le classi rimanenti nelle due super-classi binarie:
+0 = Animale e 1 = Veicolo.Mappa delle classi CIFAR-10
+IDClass                     Nome Origine                  Destinazione / Azione
+0                           Airplane (Aereo)              ❌ Escluso (Non rilevante)
+1                           Automobile                    ✅ Veicolo (1)
+2                           Bird (Uccello)                ✅ Animale (0)
+3                           Cat (Gatto)                   ✅ Animale (0)
+4                           Deer (Cervo)                  ✅ Animale (0)
+5                           Dog (Cane)                    ✅ Animale (0)
+6                           Frog (Rana)                   ✅ Animale (0)
+7                           Horse (Cavallo)               ✅ Animale (0)
+8                           Ship (Nave)                   ❌ Escluso (Non rilevante)
+9                           Truck (Camion)                ✅ Veicolo (1)
+
+Codice Python Completo
+
+import tensorflow as tf
+import numpy as np
+
+# 1. Caricamento del dataset CIFAR-10
+(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+
+# 2. Preprocessing base (Normalizzazione e Flatten)
+x_train, x_test = x_train / 255.0, x_test / 255.0
+y_train, y_test = y_train.flatten(), y_test.flatten()
+
+# 3. Definiamo le classi da MANTENERE (escludiamo 0: airplane e 8: ship)
+useful_classes = [1, 2, 3, 4, 5, 6, 7, 9]
+
+# 4. Creiamo la maschera booleana (True per le classi utili, False per aerei/navi)
+train_mask = np.isin(y_train, useful_classes)
+test_mask = np.isin(y_test, useful_classes)
+
+# 5. Applichiamo il filtro alle immagini e alle etichette
+x_train_filtered = x_train[train_mask]
+y_train_filtered = y_train[train_mask]
+
+x_test_filtered = x_test[test_mask]
+y_test_filtered = y_test[test_mask]
+
+# 6. Mappatura Binaria: Veicoli urbani (1, 9) = 1 | Animali (2, 3, 4, 5, 6, 7) = 0
+urban_vehicles = [1, 9]
+
+y_train_binary = np.isin(y_train_filtered, urban_vehicles).astype(int)
+y_test_binary = np.isin(y_test_filtered, urban_vehicles).astype(int)
+
+# --- VERIFICA DEI RISULTATI ---
+print(f"Immagini iniziali (Train): {len(x_train)}")
+print(f"Immagini filtrate (Train): {len(x_train_filtered)}  (scartate {len(x_train) - len(x_train_filtered)} immagini)")
+print("\nDistribuzione delle classi binarie nel Training Set:")
+print(f"- Animali (Label 0): {np.sum(y_train_binary == 0)} immagini")
+print(f"- Veicoli (Label 1): {np.sum(y_train_binary == 1)} immagini")
+
+1 Come funziona lo script:np.isin(y_train, useful_classes): Genera un array di True e False.
+  Se l'immagine appartiene a una classe compresa tra quelle utili, restituisce True; 
+  se è un aereo o una nave, restituisce False.
+2 x_train[train_mask]: Utilizza l'array di True/False per tenere solo le immagini corrispondenti a True, eliminando 10.000 immagini non urbane.
+3 np.isin(..., urban_vehicles).astype(int): Controlla se la classe filtrata è un'automobile o un camion. Se lo è, assegna 1 (Veicolo), altrimenti assegna 0 (Animale).
