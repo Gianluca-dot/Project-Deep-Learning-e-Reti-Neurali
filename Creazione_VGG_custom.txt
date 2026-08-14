@@ -75,11 +75,11 @@ la rete deve arrivare a output vicino a 1
 Quindi il neurone finale con sigmoid restituisce una probabilità del tipo:
 0.12 per animale
 0.91 per veicolo e poi tu applichi una soglia, ad esempio 0.5.
-
-Nota importante Questa è una buona base, ma non è ancora “ottimizzata” al massimo.                                      PER MIGLIORARE LA VGG_custom
+--------------------------------------------------------------------------------------------
+Nota importante Questa è una buona base, ma non è ancora “ottimizzata” al massimo.                                     
 Dopo averla provata, si porteranno dei miglioramenti:
-                                                                                                                        ESEGUIRE I SEGUENTI PASSAGGI                        
-numero di filtri                                                                                                        INDICATI DALLA RIGA 82 ALLA RIGA 86.
+--------------------------------------------------------------------------------------------                                                                                                                                             
+numero di filtri                                                                                                     
 dropout
 learning rate
 data augmentation
